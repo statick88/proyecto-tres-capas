@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación de Tres Capas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        li {
+            margin: 10px;
+            flex: 1 1 calc(30% - 20px);
+            /* Ajusta el tamaño de los elementos en función del ancho de la pantalla */
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        @media screen and (max-width: 768px) {
+            li {
+                flex: 1 1 calc(50% - 20px);
+                /* Ajusta el tamaño de los elementos para pantallas más pequeñas */
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            li {
+                flex: 1 1 calc(100% - 20px);
+                /* Ajusta el tamaño de los elementos para pantallas aún más pequeñas */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Bienvenido a la Aplicación</h1>
+    <button onclick="obtenerDatos()">Obtener Datos</button>
+    <ul id="lista-datos"></ul> <!-- Utilizaremos una lista para mostrar los datos -->
+
+    <script>
+        function obtenerDatos() {
+            // Lógica para realizar una solicitud al servidor y mostrar el resultado
+            fetch('http://localhost:3002/obtenerDatos')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error de red: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(datos => {
+                    // Mostrar los datos en el HTML
+                    const listaDatos = document.getElementById('lista-datos');
+                    // Limpiar la lista antes de agregar nuevos elementos
+                    listaDatos.innerHTML = '';
+
+                    // Agregar cada dato como un elemento de la lista
+                    datos.forEach(dato => {
+                        const elementoLista = document.createElement('li');
+                        elementoLista.textContent = `ID: ${dato.id}, Nombre: ${dato.nombre}`;
+                        listaDatos.appendChild(elementoLista);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al obtener datos:', error);
+                    // Manejar el error mostrando un mensaje al usuario, por ejemplo:
+                    const listaDatos = document.getElementById('lista-datos');
+                    listaDatos.innerHTML = '<li>Error al obtener datos. Por favor, intenta nuevamente.</li>';
+                });
+        }
+    </script>
+</body>
+
+</html>
