@@ -11,7 +11,7 @@ proyecto-tres-capas/
 │ └── index.html
 │
 ├── servidor/
-│ ├── node_modules/ (Creado después de ejecutar npm install en el directorio servidor)
+│ ├── node_modules/ 
 │ ├── server.js
 │ ├── package.json
 │ └── .gitignore
